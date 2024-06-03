@@ -1,0 +1,9 @@
+# Remember to add any unnecessary folders and files here
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.terraform*
+repo_key
+repo_key.pub
+add*
