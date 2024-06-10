@@ -235,6 +235,9 @@ resource "aws_instance" "tf-web-server" {
                 # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
                 # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebSocketConfig.java
 
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/config.js
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
+
                 docker-compose build --build-arg ip="$IP_V4" --no-cache
                 echo "Built Docker containers"
 
