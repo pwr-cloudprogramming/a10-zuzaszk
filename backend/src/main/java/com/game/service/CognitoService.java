@@ -64,4 +64,15 @@ public class CognitoService {
             throw new RuntimeException("Error confirming user: " + e.getMessage(), e);
         }
     }
+
+    public void logoutUser(String accessToken) {
+        try {
+            GlobalSignOutRequest globalSignOutRequest = new GlobalSignOutRequest()
+                    .withAccessToken(accessToken);
+            cognitoClient.globalSignOut(globalSignOutRequest);
+        } catch (Exception e) {
+            throw new RuntimeException("Error logging out user: " + e.getMessage(), e);
+        }
+    }
+    
 }

@@ -49,6 +49,19 @@ public class AuthController {
             return ResponseEntity.status(500).body(new AuthResponse("Error logging in user: " + e.getMessage()));
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        try {
+            String accessToken = token.replace("Bearer ", "");
+            cognitoService.logoutUser(accessToken);
+        return ResponseEntity.ok("Logout successful.");
+        } catch (Exception e) {
+            log.error("Error logging out user: {}", e.getMessage());
+            return ResponseEntity.status(500).body("Error logging out user: " + e.getMessage());
+        }
+    }
+
 }
 
 @Data
