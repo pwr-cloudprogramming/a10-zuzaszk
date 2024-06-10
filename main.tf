@@ -234,7 +234,7 @@ resource "aws_instance" "tf-web-server" {
 
                 sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
                 sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebsocketConfiguration.java
-                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/main.js
+                # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/main.js
                 sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/cognito.js
                 sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
 
