@@ -227,16 +227,16 @@ resource "aws_instance" "tf-web-server" {
 
                 cd /home/ec2-user/a10-zuzaszk/
 
-                sudo sed -i "s|COGNITO_USER_POOL_ID|${aws_cognito_user_pool.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
-                sudo sed -i "s|COGNITO_CLIENT_ID|${aws_cognito_user_pool_client.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
+                # sudo sed -i "s|COGNITO_USER_POOL_ID|${aws_cognito_user_pool.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
+                # sudo sed -i "s|COGNITO_CLIENT_ID|${aws_cognito_user_pool_client.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
 
                 # sudo sed -i "s|COGNITO_REGION|us-east-1|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
 
                 # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
                 # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebSocketConfig.java
 
-                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/config.js
-                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
+                # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/config.js
+                # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
 
                 docker-compose build --build-arg ip="$IP_V4" --no-cache
                 echo "Built Docker containers"
