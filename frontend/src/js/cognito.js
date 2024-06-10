@@ -68,22 +68,24 @@ window.logout = function() {
     localStorage.removeItem('idToken');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    // document.getElementById('auth').classList.remove('hidden');
+    // document.getElementById('game').classList.add('hidden');
 
-    // fetch(logoutUrl, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': 'Bearer ' + localStorage.getItem('idToken')
-    //     }
-    // })
-    // .then(response => {
-    //     if (response.ok) {
-    //         alert('Logout successful!');
-    //         document.getElementById('auth').classList.remove('hidden');
-    //         document.getElementById('game').classList.add('hidden');
-    //     } else {
-    //         alert('Logout failed: ' + response.statusText);
-    //     }
-    // })
-    // .catch(error => alert('Error: ' + error));
+    fetch(logoutUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('idToken')
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Logout successful!');
+            document.getElementById('auth').classList.remove('hidden');
+            document.getElementById('game').classList.add('hidden');
+        } else {
+            alert('Logout failed: ' + response.statusText);
+        }
+    })
+    .catch(error => alert('Error: ' + error));
 };
