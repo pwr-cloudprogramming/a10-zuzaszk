@@ -1,3 +1,4 @@
+// game-related functions
 var turns = [["#", "#", "#"], ["#", "#", "#"], ["#", "#", "#"]];
 var turn = "";
 var gameOn = false;

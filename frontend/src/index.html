@@ -10,12 +10,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/5.0.5/amazon-cognito-identity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.814.0/aws-sdk.min.js"></script>
 </head>
 <body>
-<div>
-            <header class="text-center">
+    <div id="auth" class="visible">
+        <div class="text-center">
+            <h1>Welcome to the Tic Tac Toe!</h1>
+        </div>
+        <div class="auth-controls text-center">
+            <input id="email" class="form-control" placeholder="Place an email here">
+            <input id="password" class="form-control" placeholder="Place a password here">
+            <button class="btn btn-success btn-block" onclick="login()">Login</button>
+            <button class="btn btn-success btn-block" onclick="register()">Register</button>
+        </div>
+    </div>
+    <div id="game" class="hidden">
+            <div class="text-center">
                 <h1>Play Tic Tac Toe</h1>
-            </header>
+            </div>
             <div class="game-controls text-center">
                 <input id="login" class="form-control" placeholder="Place a login here">
                 <button class="btn btn-success btn-block" onclick="create_game()">Create a new game</button>
@@ -33,11 +46,15 @@
                 <li class="tic" id="2_1"></li>
                 <li class="tic" id="2_2"></li>
             </ul>
-            <footer class="text-center">
+            <div class="text-center">
                 <span>You are playing with <span id="oponentLogin"></span></span>
-            </footer>
-</div>
-<script src="js/script.js"></script>
-<script src="js/socket_js.js"></script>
+            </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/socket_js.js"></script>
+    <script src="js/cognito.js"></script>
+
 </body>
 </html>

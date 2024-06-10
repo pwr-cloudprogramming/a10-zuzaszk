@@ -113,3 +113,12 @@ footer {
 #oponentLogin {
     font-weight: 600;
 }
+
+.hidden {
+    display: none;
+}
+  
+.visible {
+    display: block;
+}
+  
