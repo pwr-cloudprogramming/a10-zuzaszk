@@ -233,7 +233,8 @@ resource "aws_instance" "tf-web-server" {
                 # sudo sed -i "s|COGNITO_REGION|us-east-1|g" /home/ec2-user/a10-zuzaszk/backend/src/main/application.properties
 
                 sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
-      
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebSocketConfig.java
+
                 docker-compose build --build-arg ip="$IP_V4" --no-cache
                 echo "Built Docker containers"
 
