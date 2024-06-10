@@ -58,60 +58,30 @@ resource "aws_security_group" "allow_ssh_http" {
   name        = "allow_ssh_http"
   description = "Allow SSH and HTTP inbound traffic and all outbound traffic"
   vpc_id      = aws_vpc.my_vpc.id
-
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Frontend"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Backend"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   tags = {
     Name = "allow-ssh-http"
   }
 }
 
-# resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-#   security_group_id = aws_security_group.allow_ssh_http.id
-#   cidr_ipv4         = "0.0.0.0/0"
-#   ip_protocol       = "-1" # all ports
-# }
-# resource "aws_vpc_security_group_ingress_rule" "allow_http" {
-#   security_group_id = aws_security_group.allow_ssh_http.id
-#   cidr_ipv4         = "0.0.0.0/0"
-#   ip_protocol       = "tcp"
-#   from_port         = 8080
-#   to_port           = 8081
-# }
-# resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
-#   security_group_id = aws_security_group.allow_ssh_http.id
-#   cidr_ipv4         = "0.0.0.0/0"
-#   ip_protocol       = "tcp"
-#   from_port         = 22
-#   to_port           = 22
-# }
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
+  security_group_id = aws_security_group.allow_ssh_http.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # all ports
+}
+resource "aws_vpc_security_group_ingress_rule" "allow_http" {
+  security_group_id = aws_security_group.allow_ssh_http.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 8080
+  to_port           = 8081
+}
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
+  security_group_id = aws_security_group.allow_ssh_http.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 22
+  to_port           = 22
+}
 
 resource "aws_cognito_user_pool" "main" {
   name                     = "user-pool"
@@ -235,78 +205,45 @@ resource "aws_instance" "tf-web-server" {
                 sudo chmod +x /usr/bin/docker-compose
                 echo "Installed Docker Compose"
 
-                # API_URL="http://169.254.169.254/latest/api"
-                # TOKEN=$(curl -X PUT "$API_URL/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 600")
-                # TOKEN_HEADER="X-aws-ec2-metadata-token: $TOKEN"
-                # METADATA_URL="http://169.254.169.254/latest/meta-data"
-                # AZONE=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/placement/availability-zone)
-                # IP_V4=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/public-ipv4)
-                # INTERFACE=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/ | head -n1)
-                # SUBNET_ID=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/$INTERFACE/subnet-id)
-                # VPC_ID=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/$INTERFACE/vpc-id)
-
-                # echo "Your EC2 instance works in: AvailabilityZone: $AZONE, VPC: $VPC_ID, VPC subnet: $SUBNET_ID, IP address: $IP_V4"
-
-                # sudo chmod a+w /tmp
-                # echo "Changed permissions on /tmp"
-
-                # echo "$IP_V4" | sudo tee /tmp/ec2_ip_address.txt
-
-                # su - ec2-user -c "cd ; git clone git@github.com:pwr-cloudprogramming/a10-zuzaszk.git"
-                # echo "Cloned GitHub repo"
-
-                # cd /home/ec2-user/a10-zuzaszk/
-
-                # # export IP_V4
-
-                # # sudo sed -i "s|COGNITO_USER_POOL_ID|${aws_cognito_user_pool.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
-                # # sudo sed -i "s|COGNITO_CLIENT_ID|${aws_cognito_user_pool_client.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
-
-                # # sudo sed -i "s|COGNITO_REGION|us-east-1|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
-
-                # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
-                # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebsocketConfiguration.java
-
-                # # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/config.js
-                # # sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
-
-                # docker-compose build --build-arg ip="$IP_V4" --no-cache
-                # echo "Built Docker containers"
-
-                # docker-compose up -d
-                # echo "Started Docker containers"
-
-                # echo "User data script completed"
-
-                FRONTEND_PORT=80
-                BACKEND_PORT=8080
-
-                # Fetch the new EC2 instance IP address
                 API_URL="http://169.254.169.254/latest/api"
                 TOKEN=$(curl -X PUT "$API_URL/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 600")
                 TOKEN_HEADER="X-aws-ec2-metadata-token: $TOKEN"
                 METADATA_URL="http://169.254.169.254/latest/meta-data"
+                AZONE=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/placement/availability-zone)
                 IP_V4=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/public-ipv4)
+                INTERFACE=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/ | head -n1)
+                SUBNET_ID=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/$INTERFACE/subnet-id)
+                VPC_ID=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/network/interfaces/macs/$INTERFACE/vpc-id)
 
-                # Write the new IP address into .env file
-                echo "IP_V4=$IP_V4" > ./.env
+                echo "Your EC2 instance works in: AvailabilityZone: $AZONE, VPC: $VPC_ID, VPC subnet: $SUBNET_ID, IP address: $IP_V4"
 
-                # Set ALLOWED_ORIGINS to include localhost and the new IP
-                ALLOWED_ORIGINS="http://localhost:${FRONTEND_PORT},http://${IP_V4}"
-                echo "ALLOWED_ORIGINS=${ALLOWED_ORIGINS}" >> ./.env
+                sudo chmod a+w /tmp
+                echo "Changed permissions on /tmp"
 
-                # Write the ports to the .env file
-                echo "FRONTEND_PORT=${FRONTEND_PORT}" >> ./.env
-                echo "BACKEND_PORT=${BACKEND_PORT}" >> ./.env
+                echo "$IP_V4" | sudo tee /tmp/ec2_ip_address.txt
 
-                # Export the variables for Docker Compose
-                export IP_V4
-                export FRONTEND_PORT
-                export BACKEND_PORT
-                export ALLOWED_ORIGINS
+                su - ec2-user -c "cd ; git clone git@github.com:pwr-cloudprogramming/a10-zuzaszk.git"
+                echo "Cloned GitHub repo"
 
-                # Run Docker Compose
-                docker compose up -d && echo "Running tic-tac-toe using ip: ${IP_V4}, backend_port:$BACKEND_PORT, frontend_port:$FRONTEND_PORT"
+                cd /home/ec2-user/a10-zuzaszk/
+
+                # sudo sed -i "s|COGNITO_USER_POOL_ID|${aws_cognito_user_pool.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
+                # sudo sed -i "s|COGNITO_CLIENT_ID|${aws_cognito_user_pool_client.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
+
+                # sudo sed -i "s|COGNITO_REGION|us-east-1|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
+
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/CorsConfig.java
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/backend/src/main/java/com/game/config/WebsocketConfiguration.java
+
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/config.js
+                sudo sed -i "s|localhost|$IP_V4|g" /home/ec2-user/a10-zuzaszk/frontend/src/js/socket_js.js
+
+                # docker-compose build --build-arg ip="$IP_V4" --no-cache
+                docker-compose build --no-cache
+                echo "Built Docker containers"
+
+                docker-compose up -d
+                echo "Started Docker containers"
 
   EOF
   user_data_replace_on_change = true
