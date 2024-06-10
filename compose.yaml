@@ -5,8 +5,13 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
+      # args:
+      #   ip: ${IP_V4}
     ports:
       - 8081:3000
+    # environment:
+    #   - IP_ADDRESS=${IP_V4}
+    #   - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
   backend:
     image: mybackend
     build:
@@ -14,3 +19,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:8080
+    # environment:
+    #   - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}

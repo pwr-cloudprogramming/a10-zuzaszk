@@ -1,12 +1,12 @@
 FROM maven:3.8.1-openjdk-11-slim AS builder
 
-WORKDIR /build
 ARG ip
+WORKDIR /build
 
 COPY . .
 
-RUN sed -i "s/localhost/$ip/g" /build/src/java/com/game/config/WebSocketConfig.java
-RUN sed -i "s/localhost/$ip/g" /build/src/java/com/game/config/CorsConfig.java
+RUN sed -i "s/localhost/$ip/g" /build/src/main/java/com/game/config/WebsocketConfiguration.java
+RUN sed -i "s/localhost/$ip/g" /build/src/main/java/com/game/config/CorsConfig.java
 
 RUN mvn clean package
 

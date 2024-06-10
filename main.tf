@@ -227,6 +227,8 @@ resource "aws_instance" "tf-web-server" {
 
                 cd /home/ec2-user/a10-zuzaszk/
 
+                # export IP_V4
+
                 # sudo sed -i "s|COGNITO_USER_POOL_ID|${aws_cognito_user_pool.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
                 # sudo sed -i "s|COGNITO_CLIENT_ID|${aws_cognito_user_pool_client.main.id}|g" /home/ec2-user/a10-zuzaszk/backend/src/main/resources/application.properties
 

@@ -6,7 +6,7 @@ COPY src/ .
 
 ARG ip
 RUN sed -i "s/localhost/$ip/g" /app/js/socket_js.js
-RUN sed -i "s/localhost/$ip/g" /app/js/cognito.js
+# RUN sed -i "s/localhost/$ip/g" /app/js/cognito.js
 
 ENTRYPOINT ["busybox"]
 
