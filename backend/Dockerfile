@@ -11,8 +11,8 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 ARG ip
-RUN sed -i "s/localhost/$ip/g" /app/src/main/java/com/game/config/WebSocketConfig.java
-RUN sed -i "s/localhost/$ip/g" /app/src/main/java/com/game/config/CorsConfig.java
+RUN sed -i "s/localhost/$ip/g" /build/src/main/java/com/game/config/WebSocketConfig.java
+RUN sed -i "s/localhost/$ip/g" /build/src/main/java/com/game/config/CorsConfig.java
 
 COPY --from=builder /build/target/tic-tac-toe-0.0.1-SNAPSHOT.jar /app/tic-tac-toe-0.0.1-SNAPSHOT.jar
 
