@@ -2,7 +2,7 @@
 const registerUrl = 'http://localhost:8080/auth/register';
 const confirmUrl = 'http://localhost:8080/auth/confirm';
 const loginUrl = 'http://localhost:8080/auth/login';
-const logoutUrl = 'http://localhost:8080/auth/logout';
+const refreshUrl = 'http://localhost:8080/auth/refresh-token';
 
 function showGameBoard() {
     document.getElementById('auth').classList.add('hidden');
@@ -58,6 +58,8 @@ window.login = function() {
     })
     .then(response => response.json())
     .then(data => {
+        localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
+        localStorage.setItem('refreshToken', data.AuthenticationResult.RefreshToken);
         alert('Login successful!');
         showGameBoard();
     })
@@ -65,27 +67,58 @@ window.login = function() {
 };
 
 window.logout = function() {
-    localStorage.removeItem('idToken');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    // document.getElementById('auth').classList.remove('hidden');
-    // document.getElementById('game').classList.add('hidden');
+    alert('Logged out successfully!');
+    document.getElementById('auth').classList.remove('hidden');
+    document.getElementById('game').classList.add('hidden');
+};
 
-    fetch(logoutUrl, {
+
+function refreshAccessToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+        alert('No refresh token found. Please login again.');
+        return;
+    }
+
+    fetch(refreshUrl, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('idToken')
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refreshToken }),
+        credentials: 'include'
     })
-    .then(response => {
-        if (response.ok) {
-            alert('Logout successful!');
-            document.getElementById('auth').classList.remove('hidden');
-            document.getElementById('game').classList.add('hidden');
-        } else {
-            alert('Logout failed: ' + response.statusText);
-        }
+    .then(response => response.json())
+    .then(data => {
+        localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
+        alert('Token refreshed successfully!');
     })
     .catch(error => alert('Error: ' + error));
-};
+}
+
+// async function authFetch(url, options = {}) {
+//     const accessToken = localStorage.getItem('accessToken');
+
+//     if (!accessToken) {
+//         alert('No access token found. Please login again.');
+//         return Promise.reject('No access token');
+//     }
+
+//     options.headers = {
+//         ...options.headers,
+//         'Authorization': `Bearer ${accessToken}`
+//     };
+
+//     const response = await fetch(url, options);
+//     if (response.status === 401) {
+//         return refreshAccessToken().then(() => {
+//             const newAccessToken = localStorage.getItem('accessToken');
+//             options.headers['Authorization'] = `Bearer ${newAccessToken}`;
+//             return fetch(url, options);
+//         });
+//     }
+//     return response;
+// }

@@ -64,7 +64,7 @@ public class CognitoService {
             throw new RuntimeException("Error confirming user: " + e.getMessage(), e);
         }
     }
-
+    
     public void logoutUser(String accessToken) {
         try {
             GlobalSignOutRequest globalSignOutRequest = new GlobalSignOutRequest()
@@ -74,5 +74,21 @@ public class CognitoService {
             throw new RuntimeException("Error logging out user: " + e.getMessage(), e);
         }
     }
+    
+
+    public AdminInitiateAuthResult refreshToken(String refreshToken) {
+        try {
+            AdminInitiateAuthRequest refreshAuthRequest = new AdminInitiateAuthRequest()
+                    .withUserPoolId(userPoolId)
+                    .withClientId(clientId)
+                    .withAuthFlow(AuthFlowType.REFRESH_TOKEN_AUTH)
+                    .addAuthParametersEntry("REFRESH_TOKEN", refreshToken);
+    
+            return cognitoClient.adminInitiateAuth(refreshAuthRequest);
+        } catch (Exception e) {
+            throw new RuntimeException("Error refreshing token: " + e.getMessage(), e);
+        }
+    }
+    
     
 }

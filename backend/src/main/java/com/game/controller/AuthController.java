@@ -51,16 +51,28 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> logout(@RequestBody LogoutRequest request) {
         try {
-            String accessToken = token.replace("Bearer ", "");
-            cognitoService.logoutUser(accessToken);
-        return ResponseEntity.ok("Logout successful.");
+            cognitoService.logoutUser(request.getAccessToken());
+            return ResponseEntity.ok("User logged out successfully.");
         } catch (Exception e) {
             log.error("Error logging out user: {}", e.getMessage());
             return ResponseEntity.status(500).body("Error logging out user: " + e.getMessage());
         }
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request) {
+        try {
+            AdminInitiateAuthResult authResult = cognitoService.refreshToken(request.getRefreshToken());
+            return ResponseEntity.ok(authResult);
+        } catch (Exception e) {
+            log.error("Error refreshing token: {}", e.getMessage());
+            return ResponseEntity.status(500).body("Error refreshing token: " + e.getMessage());
+        }
+    }
+
+    
 
 }
 
@@ -80,4 +92,14 @@ class ConfirmRequest {
 @AllArgsConstructor
 class AuthResponse {
     private String idToken;
+}
+
+@Data
+class LogoutRequest {
+    private String accessToken;
+}
+
+@Data
+class RefreshTokenRequest {
+    private String refreshToken;
 }
