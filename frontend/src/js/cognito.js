@@ -98,27 +98,3 @@ function refreshAccessToken() {
     })
     .catch(error => alert('Error: ' + error));
 }
-
-// async function authFetch(url, options = {}) {
-//     const accessToken = localStorage.getItem('accessToken');
-
-//     if (!accessToken) {
-//         alert('No access token found. Please login again.');
-//         return Promise.reject('No access token');
-//     }
-
-//     options.headers = {
-//         ...options.headers,
-//         'Authorization': `Bearer ${accessToken}`
-//     };
-
-//     const response = await fetch(url, options);
-//     if (response.status === 401) {
-//         return refreshAccessToken().then(() => {
-//             const newAccessToken = localStorage.getItem('accessToken');
-//             options.headers['Authorization'] = `Bearer ${newAccessToken}`;
-//             return fetch(url, options);
-//         });
-//     }
-//     return response;
-// }
