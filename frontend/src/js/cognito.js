@@ -58,8 +58,8 @@ window.login = function() {
     })
     .then(response => response.json())
     .then(data => {
-        localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
-        localStorage.setItem('refreshToken', data.AuthenticationResult.RefreshToken);
+        // localStorage.setItem('accessToken', data.AccessToken);
+        // localStorage.setItem('refreshToken', data.RefreshToken);
         alert('Login successful!');
         showGameBoard();
     })
@@ -93,7 +93,7 @@ function refreshAccessToken() {
     })
     .then(response => response.json())
     .then(data => {
-        localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
+        localStorage.setItem('accessToken', data.AccessToken);
         alert('Token refreshed successfully!');
     })
     .catch(error => alert('Error: ' + error));
